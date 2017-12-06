@@ -1,0 +1,4 @@
+lib/.precomp/
+.precomp
+*.tar.gz
+Sparky-Plugin-Notify-Email-*

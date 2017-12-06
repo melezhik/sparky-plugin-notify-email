@@ -4,12 +4,17 @@ unit module Sparky::Plugin::Notify::Email;
 
 our sub run ( %ctx, %parameters ) {
 
-  say "project: " ~ ( %ctx<project> );
-  say "build-state: " ~ ( %ctx<build-state> );
+  my $build-id = %ctx<build-id> || "unknown";
+  my $project = %ctx<project>;
+  my $build-state = %ctx<build-state>;
+
+  say "trigger email notification. $project\@$build-id, state: $build-state";
+
   if %parameters<offline> {
-    say "don't send notification, we are in offline mode ..."
+    say "don't send notification, we are in offline mode ...";
   } else {
-    shell("echo 'Sparky %ctx<project>\@%ctx<build-id> build completed. State: @%ctx<build-state>' | mail -s '%ctx<project>\@%ctx<build-id>  %parameters<to>' ");
+    say "send email to: %parameters<to>";
+    shell("echo 'Sparky $project>\@$build-id build completed. State: $build-state' | mail -s '$project\@$build-id' -t %parameters<to>");
   }
 }
 
